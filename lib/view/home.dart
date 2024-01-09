@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latihan_bloc/bloc/counter.dart';
-import 'package:latihan_bloc/other/other.dart';
 import 'package:latihan_bloc/view/data_widget.dart';
 
 class HomePage extends StatelessWidget {
@@ -22,10 +21,13 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const OtherScreen()),
-          );
+          //local or anonymous access
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const OtherScreen()),
+          // );
+          //name route access
+          Navigator.of(context).pushNamed("/detail");
         },
         child: const Icon(Icons.arrow_forward),
       ),

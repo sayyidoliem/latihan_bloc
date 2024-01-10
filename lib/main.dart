@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latihan_bloc/bloc/counter.dart';
-import 'package:latihan_bloc/other/other.dart';
+import 'package:latihan_bloc/bloc/theme.dart';
 import 'package:latihan_bloc/routes/routes.dart';
+import 'package:latihan_bloc/view/app.dart';
 import 'package:latihan_bloc/view/home.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyAppMultiBloc());
 }
 
 class MyApp extends StatelessWidget {
@@ -42,5 +43,39 @@ class MyApp extends StatelessWidget {
       //generate route access
       onGenerateRoute: router.onRoute,
     );
+  }
+}
+
+class MyAppMultiBloc extends StatelessWidget {
+  const MyAppMultiBloc({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ThemeBloc(),
+        ),
+        BlocProvider(
+          create: (context) => Counter(),
+        ),
+      ],
+      child: const App(),
+    );
+    // return BlocProvider(
+    //   create: (context) => myTheme,
+    //   child: BlocBuilder<ThemeBloc, bool>(
+    //     bloc: myTheme,
+    //     builder: (context, state) {
+    //       return MaterialApp(
+    //         theme: state == true ? ThemeData.light() : ThemeData.dark(),
+    //         home: BlocProvider(
+    //           create: (context) => Counter(),
+    //           child: HomePage(),
+    //         ),
+    //       );
+    //     },
+    //   ),
+    // );
   }
 }

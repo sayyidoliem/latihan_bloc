@@ -1,90 +1,99 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latihan_bloc/bloc/counter.dart';
+import 'package:latihan_bloc/bloc/theme.dart';
 import 'package:latihan_bloc/view/data_widget.dart';
 
 class HomePage extends StatelessWidget {
-  // Counter myCounter = Counter();
-  //use blocprovider fr alternative
-
-  //create more var with Cubit class if want
-  Counter myCounter2 = Counter();
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Counter myCounter = BlocProvider.of<Counter>(context);
+    Counter myCounter = context.read<Counter>();
+    ThemeBloc myTheme = context.read<ThemeBloc>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "BLOC Provider",
+        title: Text("Home"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MultiBlocListener(
+              listeners: [
+                //for dark mode
+                BlocListener<Counter, int>(
+                  listener: (context, state) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Diatas 10"),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  },
+                  listenWhen: (previous, current) {
+                    if (current > 10) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  },
+                ),
+
+                //for upper of 10
+                BlocListener<ThemeBloc, bool>(
+                  listener: (context, state) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Dark Mode"),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  },
+                  listenWhen: (previous, current) {
+                    if (current == false) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  },
+                )
+              ],
+              child: BlocBuilder<Counter, int>(
+                builder: (context, state) {
+                  return Text(
+                    "$state",
+                    style: const TextStyle(fontSize: 51),
+                  );
+                },
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    myCounter.decrement();
+                  },
+                  icon: Icon(Icons.minimize),
+                ),
+                IconButton(
+                  onPressed: () {
+                    myCounter.increment();
+                  },
+                  icon: Icon(Icons.add),
+                )
+              ],
+            )
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //local or anonymous access
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const OtherScreen()),
-          // );
-          //name route access
-          Navigator.of(context).pushNamed("/detail");
+          //call theme bloc
+          myTheme.changeTheme();
         },
-        child: const Icon(Icons.arrow_forward),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              //Button decrement
-              Material(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(16),
-                child: InkWell(
-                  onTap: () {
-                    BlocProvider.of<Counter>(context)
-                        .decrement(); //call the blocprovider like this
-                  },
-                  borderRadius: BorderRadius.circular(16),
-                  child: const SizedBox(
-                    height: 100,
-                    width: 70,
-                    child: Center(
-                      child: Icon(
-                        Icons.remove,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              //Widget data counter
-              const DataWidget(), //with extract widget method
-              //Button increment
-              Material(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(16),
-                child: InkWell(
-                  onTap: () {
-                    myCounter.increment(); //simplify
-                  },
-                  borderRadius: BorderRadius.circular(16),
-                  child: const SizedBox(
-                    height: 100,
-                    width: 70,
-                    child: Center(
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+        child: Icon(Icons.dark_mode),
       ),
     );
   }

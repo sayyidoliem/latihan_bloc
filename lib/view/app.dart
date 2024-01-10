@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latihan_bloc/bloc/counter.dart';
 import 'package:latihan_bloc/bloc/theme.dart';
+import 'package:latihan_bloc/view/bloc_multi.dart';
 import 'package:latihan_bloc/view/home.dart';
 
 class App extends StatelessWidget {
@@ -16,7 +17,7 @@ class App extends StatelessWidget {
           theme: state == true ? ThemeData.light() : ThemeData.dark(),
           home: BlocProvider(
             create: (context) => Counter(),
-            child: const HomePage(),
+            child: const HomeMultiBlocPage(),
           ),
         );
       },

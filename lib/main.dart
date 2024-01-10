@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latihan_bloc/bloc/counter.dart';
 import 'package:latihan_bloc/bloc/theme.dart';
+import 'package:latihan_bloc/bloc/user.dart';
 import 'package:latihan_bloc/routes/routes.dart';
 import 'package:latihan_bloc/view/app.dart';
+import 'package:latihan_bloc/view/bloc_multi.dart';
 import 'package:latihan_bloc/view/home.dart';
 
 void main() {
-  runApp(const MyAppMultiBloc());
+  runApp(MyAppExtensionMethod());
 }
 
 class MyApp extends StatelessWidget {
@@ -77,5 +79,33 @@ class MyAppMultiBloc extends StatelessWidget {
     //     },
     //   ),
     // );
+  }
+}
+
+class MyAppBlocSelector extends StatelessWidget {
+  const MyAppBlocSelector({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: BlocProvider(
+        create: (context) => UserBloc(),
+        child: HomeBlocSelector(),
+      ),
+    );
+  }
+}
+
+class MyAppExtensionMethod extends StatelessWidget {
+  const MyAppExtensionMethod({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: BlocProvider(
+        create: (context) => UserBloc(),
+        child: HomePageExtensionMethod(),
+      ),
+    );
   }
 }

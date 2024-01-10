@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latihan_bloc/404/404.dart';
 import 'package:latihan_bloc/bloc/counter.dart';
 import 'package:latihan_bloc/other/other.dart';
+import 'package:latihan_bloc/view/bloc_multi.dart';
 import 'package:latihan_bloc/view/bloc_provider.dart';
-import 'package:latihan_bloc/view/home.dart';
 
 class MyRouter {
   //generate route access
@@ -17,7 +17,7 @@ class MyRouter {
           builder: (context) {
             return BlocProvider.value(
               value: myCounter,
-              child: HomePage(),
+              child: HomeMultiBlocPage(),
             );
           },
         );
